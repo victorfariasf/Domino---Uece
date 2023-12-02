@@ -1,22 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#include <domino.h>
+#include <locale.h>
 
-// Criação de struct em formato peça
-typedef struct{//Cima == Lado Direito e Baixo == Lado Esquerdo
-    int ladoDireito;
-    int ladoEsquerdo;
-} peca;
+#include "estruturaJogo.h"
+#include "jogo.h"
+#include "estruturaJogo.h"
+#include "estruturaPeca.h"
+#include "basicoJogo.h"
 
-// Criação de struct que representa um jogador
-typedef struct {
-    char nome[50];
-    peca mao[7];
-}jogador;
+struct peca;
+struct jogador;
 
+void identificarJogador (struct jogador jogadoresMain[], int numJogadores){
 
-void iniciandoPecas(peca pecas[], int numPecas){
+    //jogadores[numJogadores];
+
+    int i, j;
+
+    for(i = 0; i < 2; i++){
+        printf("insira o nome do jogador %d:\n", i + 1);
+        fgets(jogadoresMain[i].nome, 50, stdin);
+        fflush(stdin);
+    }
+
+}
+
+// ----------------- criação das peças --------------------
+void iniciandoPecas(struct peca pecas[], int numPecas){
 
     // Iniciar as peças com suas combinações possíveis
 
@@ -32,24 +44,8 @@ void iniciandoPecas(peca pecas[], int numPecas){
 
 }
 
-
-void identificarJogador(jogador jogadoresMain[], int numJogadores){
-
-    //jogadores[numJogadores];
-
-    int i, j;
-
-    for(i = 0; i < 2; i++){
-        printf("insira o nome do jogador %d:\n", i + 1);
-        fgets(jogadoresMain[i].nome, 50, stdin);
-        fflush(stdin);
-    }
-
-}
-
-
-void distribuirPecas(peca pecas[], int numPecas, jogador jogadores[], int numJogadores){
-
+// ----------- distribuição automática das peças -------------
+void distribuirPecas(struct peca pecas[], int numPecas, struct jogador jogadores[], int numJogadores){
 
     // Embaralhar as peças e dar as peças ao jogador
 
@@ -69,7 +65,9 @@ void distribuirPecas(peca pecas[], int numPecas, jogador jogadores[], int numJog
             pecas[embaralharIndice].ladoDireito = NULL;
             pecas[embaralharIndice].ladoEsquerdo = NULL;
 
-        }
-    }
 
+            jogadores[i].contadorDePecas++;
+        }
+
+    }
 }
