@@ -12,6 +12,7 @@
 
 struct peca;
 struct jogador;
+struct mesa;
 
 int compraPeca(struct jogador jogadores[], int jogador, struct peca todasPecas[], int numPecas){
   int i, indiceAleatorio;

@@ -8,12 +8,19 @@ int jogada1(struct jogador jogadoresMesa[], int numJogadores, struct peca todasP
 
 int jogoAcabou(struct jogador players[], int numPlayers);
 
-struct peca jogarPeca (struct jogador jogadorJogar[], int qualJogador);
+struct peca decidirPeca(struct jogador *jogadorJogar[], int *qualJogador);
 
-int podeJogar(struct peca pecaEscolhidaJogador, struct peca pecaMesa1, struct peca pecaMesa2);
+//struct peca jogarPeca (struct jogador jogadorJogar[], int qualJogador);
+
+int podeJogarLado(struct peca pecaEscolhidaJogador, struct mesa *pecaMesa)
+
+//int podeJogar(struct peca pecaEscolhidaJogador, struct peca *mesaL1, struct peca *mesaL2);
 
 int primeiraJogada(struct jogador jogadoresMain[], int numJogadores, struct peca pecaEscolhida);
 
 int calcularSomaPecas(struct jogador jogador);
+
+void giraPeca(struct peca *pecaEscolhidaJogador);
+
 
 #endif // ESTRUTURAJOGO_H_INCLUDED

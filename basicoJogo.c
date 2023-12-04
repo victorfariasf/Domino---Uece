@@ -12,6 +12,7 @@
 
 struct peca;
 struct jogador;
+struct mesa;
 
 void identificarJogador (struct jogador jogadoresMain[], int numJogadores){
 

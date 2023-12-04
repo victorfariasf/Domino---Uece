@@ -5,10 +5,6 @@
 #include <locale.h>
 
 #include "jogo.h"
-#include "estruturaJogo.h"
-#include "estruturaJogo.h"
-#include "mostraTela.h"
-#include "basicoJogo.h"
 
 //funções pecas
 
@@ -19,7 +15,9 @@ void imprimirUmaPecas(struct peca pecaEscolhidaJogador, int quemVaiJogar, struct
 
 void imprimirDuasPecas(struct peca pecaEscolhidaJogador, int quemVaiJogar, struct peca peca1, struct peca peca2);
 
-
+struct peca;
+struct jogador;
+struct mesa;
 
 // main
 
@@ -27,11 +25,25 @@ int main(void){
 
     setlocale(LC_ALL, "Portuguese");
 
-    int op, quemJogou, fimJogo, primeiraJogada;
+    int op, quemJogou, fimJogo, primeiraJogada, i;
+    struct mesa mesaJogo;
+
+    mesaJogo.qntd = 0;
+
+    for(i = 0; i < 60; i ++){
+        mesaJogo.pecas[i].ladoDireito = -1;
+        mesaJogo.pecas[i].ladoEsquerdo = -1;
+    }
 
     struct peca todasPecas[28];
     struct jogador jogadoresMain[2];
     struct peca mesaL1, mesaL2;
+
+    mesaL1.ladoDireito = -1;
+    mesaL1.ladoEsquerdo = -1;
+
+    mesaL2.ladoDireito = -1;
+    mesaL2.ladoEsquerdo = -1;
 
     printf("Domino MASTER GAME\n\n");
     printf("Jogo novo - 1\nCarregar Jogo - 2\n"); //\n3 - Sair do Menu
@@ -63,25 +75,50 @@ int main(void){
 
     //---- mostrar a mesa com a mão dos jogadores -----
 
+    system("cls");
+
 
     primeiraJogada = jogada1(jogadoresMain, 2, todasPecas, 28, &mesaL1, &mesaL2);
 
-    quemJogou = jogo(jogadoresMain, primeiraJogada, todasPecas, 28, &mesaL1, &mesaL2);
+    quemJogou = jogo(jogadoresMain, primeiraJogada, todasPecas, 28, &mesaL1, &mesaL2, &mesaJogo);
+
+    while(1){
+        printf("Jogador: %s", jogadoresMain[quemJogou].nome);
+
+        printf("1 - Jogar\n2 - Comprar Peça\n 3 - Passar Jogada")
+        scanf("%d", &opcao);
+
+        switch(opcao){
+case 1:
+    deuCerto = rodada();
+    if(deuCerto == 1){
+        /**/
+    }
+    break;
+case 2:
+    deuCerto = compraPeca();
+    break;
+case 3:
+    return qualJogador;
+    break;
+default:
+    printf("opção inválida...Tente novamente\n");
+    break;
+        }
+    }
 
     while(fimJogo != 1){
 
       if(quemJogou == 0){//se for zero ent o jogador 1 joga.
-        quemJogou = jogo(jogadoresMain, 1, todasPecas, 28, &mesaL1, &mesaL2);
+        quemJogou = jogo(jogadoresMain, 1, todasPecas, 28, &mesaL1, &mesaL2, &mesaJogo);
       }else{
-        quemJogou = jogo(jogadoresMain, 0, todasPecas, 28, &mesaL1, &mesaL2);
+        quemJogou = jogo(jogadoresMain, 0, todasPecas, 28, &mesaL1, &mesaL2, &mesaJogo);
       }
 
       fimJogo = jogoAcabou(jogadoresMain, 2);
 
 
     }
-
-
 
     printf("passou das funções\n");
 }

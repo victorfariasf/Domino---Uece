@@ -13,9 +13,45 @@
 struct peca;
 struct jogador;
 
-void imprimeMesa(struct peca pecaJogada, struct peca *mesaL1, struct peca *mesaL2, int qualLado){
+void imprimeLadoEsquerdo(struct peca pecaJogada, struct peca *mesaL1, struct peca *mesaL2){
+
+    if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito == -1){
+        printf("|%d|%d| - ", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito);
+    }
+    else if(mesaL1->ladoDireito != -1 && mesaL2->ladoDireito == -1){
+        printf("|%d|%d| - |%d|%d| -", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito, mesaL1->ladoEsquerdo, mesaL1->ladoDireito);
+    }
+    else if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito != -1){
+            printf("|%d|%d| - |%d|%d| -", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito, mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
+    }
+    else if(mesaL1->ladoDireito != -1 && mesaL2->ladoEsquerdo != -1){
+            printf("|%d|%d| - |%d|%d| - |%d|%d|", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito, mesaL1->ladoEsquerdo, mesaL1->ladoDireito, mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
+    }
+
+}
+
+void imprimeLadoDireito(struct peca pecaJogada, struct peca *mesaL1, struct peca *mesaL2){
+
+    if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito == -1){
+        printf("|%d|%d| - ", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito);
+    }
+    else if(mesaL1->ladoDireito != -1 && mesaL2->ladoDireito == -1){
+        printf("|%d|%d| - |%d|%d| -", mesaL1->ladoEsquerdo, mesaL1->ladoDireito, pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito);
+    }
+    else if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito != -1){
+            printf("|%d|%d| - |%d|%d| -", mesaL2->ladoEsquerdo, mesaL2->ladoDireito, pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito);
+    }
+    else if(mesaL1->ladoDireito != -1 && mesaL2->ladoEsquerdo != -1){
+            printf("|%d|%d| - |%d|%d| - |%d|%d|", mesaL1->ladoEsquerdo, mesaL1->ladoDireito, mesaL2->ladoEsquerdo, mesaL2->ladoDireito, pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito);
+    }
+
+}
+
+
+
+/*void imprimeMesa(struct peca pecaJogada, struct peca *mesaL1, struct peca *mesaL2, int qualLado){
     // 1 - esquerdo e 2 - direito
-    system("cls");
+    //system("cls");
     if(qualLado == 1){
         if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito >= 0){
             printf("|%d|%d| - |%d|%d|\n", pecaJogada.ladoEsquerdo, pecaJogada.ladoDireito, mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
@@ -35,16 +71,37 @@ void imprimeMesa(struct peca pecaJogada, struct peca *mesaL1, struct peca *mesaL
 
     }
 
-}
+}*/
 
 void imprimeSimples(struct peca *mesaL1, struct peca *mesaL2){
 
-    if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito >= 0){
-        printf("sem peça do lado esquerdo - |%d|%d|\n", mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
-    }else if(mesaL2->ladoDireito == -1 && mesaL1->ladoDireito >= 0){
-        printf("|%d|%d| - sem peça do lado direito\n", mesaL1->ladoEsquerdo, mesaL1->ladoDireito);
-    }else if(mesaL1->ladoDireito == -1 && mesaL2->ladoDireito == -1){
-        printf("sem peça na mesa\n");
+
+    if(mesaL1->ladoDireito == -1 & mesaL2->ladoDireito == -1){
+        printf(" - \n");
+    }
+    else if(mesaL1->ladoDireito != -1 & mesaL2->ladoDireito == -1){
+        printf("|%d|%d| - \n", mesaL1->ladoEsquerdo, mesaL1->ladoDireito);
+    }
+    else if(mesaL2->ladoDireito != -1 && mesaL1->ladoDireito == -1){
+        printf(" - |%d|%d|\n", mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
+    }
+    else if(mesaL1->ladoDireito != -1 & mesaL2->ladoDireito != -1){
+        printf("|%d|%d| - |%d|%d|\n", mesaL1->ladoEsquerdo, mesaL1->ladoDireito, mesaL2->ladoEsquerdo, mesaL2->ladoDireito);
     }
 
 }
+ void imprimirMesa(struct mesa *jogoMesa){
+
+    int i;
+
+    for(i=0;i>60;i++){
+        if(jogoMesa->pecas[i]->ladoDireito == -1){
+            continue;
+        }else{
+            printf("|%d|%d| - ", jogoMesa->pecas[i]->ladoEsquerdo, jogoMesa->pecas[i]->ladoDireito);
+        }
+        printf("\n");
+    }
+
+
+ }

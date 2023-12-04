@@ -6,103 +6,30 @@
 
 #include "estruturaJogo.h"
 #include "jogo.h"
-#include "mostraTela.h"
+#include "mostrarTela.h"
 #include "estruturaPeca.h"
 #include "basicoJogo.h"
 
 
 struct jogador;
 struct peca;
+struct mesa;
 
 int jogada1(struct jogador jogadoresMesa[], int numJogadores, struct peca todasPecasMesa[], int numPecas, struct peca *mesaL1, struct peca *mesaL2){
 //declaração de variáveis
 
-  int quemVaiJogar, comprou, comprar, qualLado;
-  struct peca primeiraPeca, pecaEscolhidaJogador, pecaMesa1, pecaMesa2;
+  int jogadaPermitida, quemVaiJogar, comprou, comprar, qualLado;
+  struct peca primeiraPeca, pecaEscolhidaJogador;
   struct peca pecaEsquerda, pecaDireita;
-
-  //primeiraPeca é uma struct de comparação. Como não existe outras peças na primeira rodada ela serve de base.
-  pecaMesa1.ladoDireito = -1;
-  pecaMesa1.ladoEsquerdo = -1;
-  *mesaL1 = pecaMesa1;
-
-  pecaMesa2.ladoEsquerdo = -1;
-  pecaMesa2.ladoDireito = -1;
-  *mesaL2 = pecaMesa2;
-
-  primeiraPeca.ladoDireito = -1;
-  primeiraPeca.ladoEsquerdo = -1;
 
   // --- funçao começa aqui
 
   quemVaiJogar = primeiraJogada(jogadoresMesa, numJogadores, primeiraPeca);
-  printf("Jogador %s, começa", jogadoresMesa[quemVaiJogar]);
-
-  //se for um carrosel mesaL1 recebe essa peça
-  *mesaL1 = primeiraPeca;
+  printf("Jogador %s, começa\n", jogadoresMesa[quemVaiJogar]);
 
   return quemVaiJogar;
 }
-
-int jogoAcabou(struct jogador players[], int numPlayers){
-
-  int i, j;
-  for( i = 0; i < numPlayers; i ++){
-    for(j = 0; j < players[i].contadorDePecas; j++){
-      if(players[i].contadorDePecas == 0){
-        printf("fim de jogo. Jogador %d venceu!\n", i);
-        return 1;
-      }
-    }
-  }
-  return 0;
-}
-
-struct peca jogarPeca(struct jogador jogadorJogar[], int qualJogador){
-
-  int pecaJogada, i;
-
-  printf("Mão do jogador: %s\n", jogadorJogar[qualJogador].nome);
-
-  for(i = 0; i < jogadorJogar[qualJogador].contadorDePecas; i++){
-
-    printf("|%d|%d|\nPeça |%d|\n", jogadorJogar[qualJogador].mao[i].ladoEsquerdo, jogadorJogar[qualJogador].mao[i].ladoDireito, i);
-
-  }
-
-  printf("Qual peça você deseja jogar?\n");
-  scanf("%d", &pecaJogada);
-
-  return jogadorJogar[qualJogador].mao[pecaJogada];
-
-}
-
-// --------- confirmação de jogada -------------
-int podeJogar(struct peca pecaEscolhidaJogador, struct peca pecaMesa1, struct peca pecaMesa2){
-
-  if(pecaMesa1.ladoDireito != -1 && pecaMesa2.ladoDireito != -1){
-    if(pecaEscolhidaJogador.ladoDireito == pecaMesa1.ladoEsquerdo){
-        if(pecaEscolhidaJogador.ladoEsquerdo == pecaMesa2.ladoDireito){
-        printf("Pode ser jogada no lado direito\n");
-        return 2;
-        }
-        printf("Pode ser jogada no lado esquerdo\n");
-        return 1;
-    }
-  }
-
-  else if(pecaMesa1.ladoDireito == -1){
-        if(pecaEscolhidaJogador.ladoEsquerdo == pecaMesa2.ladoDireito){
-        printf("Pode ser jogada no lado direito\n");
-        return 2;
-        }
-    }else if(pecaMesa2.ladoDireito == -1){
-            if(pecaMesa1.ladoDireito != -1 && pecaMesa2.ladoDireito != -1){
-                printf("Pode ser jogada no lado esquerdo\n");
-                return 1;
-            }
-    }
-}
+// qual a maior peça? - tem que fazer!;
 
 int primeiraJogada(struct jogador jogadoresMain[], int numJogadores, struct peca pecaEscolhida){
 
@@ -118,24 +45,139 @@ int primeiraJogada(struct jogador jogadoresMain[], int numJogadores, struct peca
     soma2 = calcularSomaPecas(jogadoresMain[1]);
 
     if(soma1 > soma2){
-      printf("%s\nComeça...\n", jogadoresMain[0].nome);
+      printf("%s\nComeça com a maior soma...\n", jogadoresMain[0].nome);
       return 0;
     }else{
-      printf("%s\nComeça...\n", jogadoresMain[1].nome);
+      printf("%s\nComeça com a maior soma...\n", jogadoresMain[1].nome);
       return 1;
     }
 
   }
   else{
     if(maiorCarrossel1.ladoDireito > maiorCarrossel2.ladoDireito){
-      printf("%s\nPossui o maior carrossel\n", jogadoresMain[0].nome);
+      printf("%s\nPossui o maior carrossel - |%d|%d| \n", jogadoresMain[0].nome, maiorCarrossel1.ladoEsquerdo, maiorCarrossel1.ladoDireito);
       return 0;
     }
     else{
-      printf("%s\nPossui o maior carrossel\n", jogadoresMain[1].nome);
+      printf("%s\nPossui o maior carrossel - |%d|%d| \n", jogadoresMain[1].nome, maiorCarrossel2.ladoEsquerdo, maiorCarrossel2.ladoDireito);
     return 1;
     }
   }
+}
+
+
+int decidirPeca(struct jogador *jogadorDaVez){
+
+  int pecaJogada, i;
+
+  printf("Mão do jogador: %s\n", jogadorDaVez->nome);
+
+  for(i = 0; i < 7; i++){
+    printf("|%d|%d| - Peça %d\n", jogadorDaVez->mao[i]->ladoEsquerdo, jogadorDaVez->mao[i]->ladoDireito, i);
+
+  }
+
+  printf("\nQual peça você deseja jogar?\n");
+  scanf("%d", &pecaJogada);
+  
+      printf("Girar peça?\n1 -  Sim\n2 - Não\n");
+      scanf("%d", &girar);
+      
+      if(girar == 1){
+      giraPeca(&jogadorDaVez->mao[pecaJogada])
+      }
+      
+      return pecaJogada;
+
+}
+
+// --------- confirmação de jogada -------------
+
+int podeJogarLado(struct peca *pecaEscolhidaJogador, struct mesa *pecaMesa){
+
+    int i, ladoE = 0, ladoD = 0;
+    for(i = 0; i < 30 i++){
+        if(pecaMesa->pecas[i] == -1){
+            continue;
+        }
+        else if(pecaMesa->pecas[i]->ladoEsquerdo == pecaEscolhidaJogador->ladoDireito){
+            lado = 1;
+        }
+    }
+
+    int i;
+    for(i = 60; i > 30; i--){
+        if(pecaMesa->pecas[i] == -1){
+            continue;
+        }
+        else if(pecaMesa->pecas[i]->ladoDireito == pecaEscolhidaJogador->ladoEsquerdo){
+            ladoD = 2;
+        }
+    }
+
+    if(ladoE == 1 && ladoD == 2){
+        return 3;
+    }
+    else if(ladoE == 1){
+        return 1;
+    }
+    else if(ladoD == 2){
+        return 2;
+    }
+
+    return 0;
+}
+
+
+/*int podeJogar(struct peca pecaEscolhidaJogador, struct peca *mesaL1, struct peca *mesaL2){
+
+    if(mesaL1->ladoDireito != -1 && mesaL2->ladoDireito != -1){
+        if(pecaEscolhidaJogador.ladoDireito == mesaL1->ladoEsquerdo){
+            if(pecaEscolhidaJogador.ladoEsquerdo == mesaL2->ladoDireito){
+                //printf("A peça pode ser jogada nos dois lados\n");
+                return 3;
+            }
+        }
+        else{
+            //printf("A peça só pode ser jogada no lado esquerdo\n");
+            return 1;
+        }
+    }
+    else if(mesaL1->ladoEsquerdo == -1){
+        if(pecaEscolhidaJogador.ladoEsquerdo == mesaL2->ladoDireito){
+            //printf("A peça pode ser jogada nos dois lados\n");
+            return 2;
+        }
+        else{
+            //printf("A peça pode ser jogada no lado esquerdo\n");
+            return 1;
+        }
+    }
+    else if(mesaL2->ladoDireito == -1){
+        if(pecaEscolhidaJogador.ladoDireito == mesaL1->ladoEsquerdo){
+            //printf("A peça pode ser jogada nos dois lados\n");
+            return 3;
+        }
+        else{
+            //printf("A peça só pode ser jogada no lado direito\n");
+            return 2;
+        }
+    }
+
+    //printf("A peça não pode ser jogada...Escolha outra\n");
+    return 0;
+
+}*/
+
+void giraPeca(struct peca *pecaEscolhidaJogador){
+
+    int aux;
+    struct peca pecaInvertida;
+
+    pecaEscolhidaJogador->ladoDireito = aux;
+    pecaEscolhidaJogador->ladoDireito = pecaEscolhidaJogador->ladoEsquerdo;
+    pecaEscolhidaJogador->ladoEsquerdo = aux;
+
 }
 
 // ----------- somar a quantidade diponível das peças -------------
@@ -145,4 +187,18 @@ int calcularSomaPecas(struct jogador jogador){
         soma = soma + (jogador.mao[i].ladoEsquerdo) + (jogador.mao[i].ladoDireito);
     }
     return soma;
+}
+
+int jogoAcabou(struct jogador players[], int numPlayers){
+
+  int i, j;
+  for( i = 0; i < numPlayers; i ++){
+    for(j = 0; j < players[i].contadorDePecas; j++){
+      if(players[i].contadorDePecas == 0){
+        printf("fim de jogo. Jogador %s venceu!\n", players[i].nome);
+        return 1;
+      }
+    }
+  }
+  return 0;
 }

@@ -14,6 +14,11 @@ struct jogador {
   int contadorDePecas;
 };
 
+struct mesa{
+    struct peca pecas[60];
+    int qntd;
+};
+
 void identificarJogador (struct jogador jogadoresMain[], int numJogadores);
 
 void iniciandoPecas(struct peca pecas[], int numPecas);
