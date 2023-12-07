@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Victo/Desktop/PROGRAMAS/GitHub/Domino",
-      "program": "c:/Users/Victo/Desktop/PROGRAMAS/GitHub/Domino/build/Debug/outDebug",
+      "cwd": "c:/Users/Victo/Desktop/PROGRAMAS/GitHub/Domino/domino",
+      "program": "c:/Users/Victo/Desktop/PROGRAMAS/GitHub/Domino/domino/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
