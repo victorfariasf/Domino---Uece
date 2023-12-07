@@ -4,6 +4,7 @@
 #include <locale.h>
 #include <time.h>
 
+#define NOME_ARQ "..//save.bin"
 struct peca
 {
     int ladoDireito;
@@ -34,6 +35,7 @@ struct estate
     struct jogador j[2];
     struct pecasDaMesa pilha;
     struct mesa mesaJogo;
+    int qualPeca;
 };
 
 //----------------------------------------------
@@ -606,10 +608,10 @@ int passarVez(int quemComeca)
     }
 }
 
-void salvar(struct estate *estado)
+void salvar(struct estate *estado, const char *nomeArquivo)
 {
 
-    FILE *arq = fopen("save.bin", "wb");
+    FILE *arq = fopen(nomeArquivo, "wb");
     if (arq == NULL)
     {
         printf("erro ao abrir o save.bin para salvar o game\n");
@@ -633,10 +635,10 @@ void salvar(struct estate *estado)
     fclose(arq);
 }
 
-void carregar(struct estate *estado)
+void carregar(struct estate *estado, const char *nomeArquivo)
 {
 
-    FILE *arq = fopen("save.bin", "rb");
+    FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL)
     {
         printf("erro ao abrir o save.bin para carregar o game\n");
@@ -652,7 +654,7 @@ void carregar(struct estate *estado)
         }
         else
         {
-            printf("salvo com sucesso\n");
+            printf("carregado com sucesso\n");
             system("pause");
             system("cls");
         }
@@ -735,12 +737,45 @@ int main(void)
         {
             printf("Seu jogo está sendo carregado...\n");
 
-            carregar(&estado);
+            //carregar(&estado, NOME_ARQ);
+
+          //  FILE *arq = fopen(nomeArquivo, "rb");
+            FILE *arq = fopen("..//save.bin", "rb");
+                if (arq == NULL)
+                {
+                    printf("erro ao abrir o save.bin para carregar o game\n");
+                    exit(1);
+                }
+                else
+                {
+                    if (fread(&estado, sizeof(struct estate), 1, arq) != 1)
+                    {
+                        printf("erro pra carregar\n");
+                        system("pause");
+                        exit(1);
+                    }
+                    else
+                    {
+                        printf("carregado com sucesso\n");
+                        system("pause");
+                        system("cls");
+                    }
+                }
+                fclose(arq);
 
             jogadoresMain[0] = estado.j[0];
+           // for(i = 0; i < 1 + estado.j[0].contadorDePecas; i++){
+             //   jogadoresMain[0].mao[i] = estado.j[0].mao[i];
+            //}
             jogadoresMain[1] = estado.j[1];
+            //for(i = 0; i < 1 + estado.j[0].contadorDePecas; i++){
+              //  jogadoresMain[1].mao[i] = estado.j[1].mao[i];
+            //}
             pilha = estado.pilha;
             mesaJogo = estado.mesaJogo;
+            qualPeca = estado.qualPeca;
+
+
             // loadEstate(&jogadoresMain[0], &jogadoresMain[1], &mesaJogo, &pilha);
 
             /*
@@ -765,7 +800,7 @@ int main(void)
 
             // Função carregar estava sendo implementada
 
-            do{
+            /*do{
                 imprimeMesa(&mesaJogo);
                 printf("\n%s tem %d peças\n", jogadoresMain[0].nome, 1 + jogadoresMain[0].contadorDePecas);
                 printf("%s tem %d peças\n", jogadoresMain[1].nome, 1 + jogadoresMain[1].contadorDePecas);
@@ -837,7 +872,9 @@ int main(void)
                     jogador = passarVez(jogador);
                     system("cls");
                     imprimeMesa(&mesaJogo);
-                }while (1);
+                }while (1);*/
+
+                op = 2;
                 
                     
             }
@@ -900,7 +937,7 @@ int main(void)
         }
 
         printf("\nquem é o jogador atual: %s\n", jogadoresMain[jogador].nome);
-
+if(op == 2 || op == 1){
         do
         {
             imprimeMesa(&mesaJogo);
@@ -940,7 +977,8 @@ int main(void)
                                 estado.j[1] = jogadoresMain[1];
                                 estado.mesaJogo = mesaJogo;
                                 estado.pilha = pilha;
-                                salvar(&estado);
+                                estado.qualPeca = qualPeca;
+                                salvar(&estado, NOME_ARQ);
                             }
 
                             if (1 + jogadoresMain[jogador].contadorDePecas == 0)
@@ -990,6 +1028,8 @@ int main(void)
             imprimeMesa(&mesaJogo);
 
         } while (1);
+
+}
 
         /*
         do{
