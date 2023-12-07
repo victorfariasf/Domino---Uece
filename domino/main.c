@@ -174,20 +174,74 @@ int primeiro(struct jogador jogadoresMain[], int jogadores, struct mesa *mesaJog
 
     struct peca maiorCarrossel1, maiorCarrossel2;
     int soma1, soma2, i;
+    int maiorDupla1 = -1, maiorDupla2 = -1, pecaJogada; 
 
     maiorCarrossel1 = carrossel(jogadoresMain[0], indiceCarrossel1);
     maiorCarrossel2 = carrossel(jogadoresMain[1], indiceCarrossel2);
 
     if(maiorCarrossel1.ladoDireito == -1 && maiorCarrossel2.ladoDireito == -1){
 
+    if (maiorDupla1 != -1 && maiorDupla2 != -1) {
+        if (jogadoresMain[0].mao[maiorDupla1].ladoEsquerdo > jogadoresMain[1].mao[maiorDupla2].ladoEsquerdo) {
+
+                for(i = 0; i < 20 + 1; i++){
+                    if(jogadoresMain[0].mao[i].ladoDireito != -1){
+                        printf("|%d|%d| - Peça %d\n", jogadoresMain[0].mao[i].ladoEsquerdo, jogadoresMain[0].mao[i].ladoDireito, i);
+                    }
+                }
+                printf("Qual peça vc vai jogar?\n");
+                scanf("%d", &pecaJogada);
+                mesaJogo->pecas[30] = jogadoresMain[0].mao[pecaJogada];
+
+
+            return 0; // Índice do jogador1
+        } else if (jogadoresMain[1].mao[maiorDupla2].ladoEsquerdo > jogadoresMain[0].mao[maiorDupla1].ladoEsquerdo) {
+
+                for(i = 0; i < 20 + 1; i++){
+                    if(jogadoresMain[1].mao[i].ladoDireito != -1){
+                        printf("|%d|%d| - Peça %d\n", jogadoresMain[1].mao[i].ladoEsquerdo, jogadoresMain[1].mao[i].ladoDireito, i);
+                    }
+                }
+                printf("Qual peça vc vai jogar?\n");
+                scanf("%d", &pecaJogada);
+                mesaJogo->pecas[30] = jogadoresMain[1].mao[pecaJogada];
+
+      
+
+            return 1; // Índice do jogador2
+        }
+    }
+
     soma1 = calcularSomaPecas(jogadoresMain[0]);
     soma2 = calcularSomaPecas(jogadoresMain[1]);
 
     if(soma1 > soma2){
       printf("%s\nComeça com a maior soma...\n", jogadoresMain[0].nome);
+
+        for(i = 0; i < 20 + 1; i++){
+            if(jogadoresMain[0].mao[i].ladoDireito != -1){
+                printf("|%d|%d| - Peça %d\n", jogadoresMain[0].mao[i].ladoEsquerdo, jogadoresMain[0].mao[i].ladoDireito, i);
+            }
+        }
+        printf("Qual peça vc vai jogar?\n");
+        scanf("%d", &pecaJogada);
+        mesaJogo->pecas[30] = jogadoresMain[0].mao[pecaJogada];
+
+
+
       return 0;
     }else{
       printf("%s\nComeça com a maior soma...\n", jogadoresMain[1].nome);
+
+        for(i = 0; i < 20 + 1; i++){
+            if(jogadoresMain[1].mao[i].ladoDireito != -1){
+                printf("|%d|%d| - Peça %d\n", jogadoresMain[1].mao[i].ladoEsquerdo, jogadoresMain[1].mao[i].ladoDireito, i);
+            }
+        }
+        printf("Qual peça vc vai jogar?\n");
+        scanf("%d", &pecaJogada);
+        mesaJogo->pecas[30] = jogadoresMain[1].mao[pecaJogada];
+
       return 1;
     }
 
@@ -230,19 +284,6 @@ int calcularSomaPecas(struct jogador jogador){
 //----------------------------------------------
 //----------------------------------------------
 
-
-int menu(){
-
-    int x;
-
-
-        printf("1 - Jogar Peça\n2 - Comprar Peça\n3 - Passar Rodada\n");
-        scanf("%d", &x);
-
-    return x;
-
-
-}
 
 int decidirPeca(struct jogador *jogador, struct pecasDaMesa *pilha){
     int pecaJogada, i, girar, opcao, ui;
