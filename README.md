@@ -151,6 +151,5 @@ Ter feito esse código sozinho, pensando na maioria das funções e nas
 formas de implementá-las, me fez me sentir muito autônomo e
 responsável. Ir atrás de respostas de erros, segmentation fault, campos
 indevidos de structs e por aí vai.
-Sem dúvida, sou um outro aluno de computação após ter feito este
-trabalho
+
 
