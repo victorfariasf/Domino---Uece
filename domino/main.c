@@ -68,7 +68,7 @@ void iniciandoPecas(struct pecasDaMesa *pilha)
     }
 
     pilha->contadorDePecas = pieceI;
-
+/*
     for (i = 0; i < pilha->contadorDePecas; i++)
     {
         printf("- |%d|%d| -", pilha->pecasDaPilha[i].ladoDireito, pilha->pecasDaPilha[i].ladoEsquerdo);
@@ -109,10 +109,10 @@ void distribuirPecas(struct pecasDaMesa *pilha, struct jogador *jogadores)
         {
 
             jogadores->mao[controle] = pilha->pecasDaPilha[embaralharIndice];
-            printf("|%d|%d|\n", jogadores->mao[controle].ladoEsquerdo, jogadores->mao[controle].ladoDireito);
-            printf("em cima peça do jogador, embaixo a peça usada\n");
-            printf("|%d|%d|\n", pilha->pecasDaPilha[embaralharIndice].ladoEsquerdo, pilha->pecasDaPilha[embaralharIndice].ladoDireito);
-            printf("---\n");
+            //printf("|%d|%d|\n", jogadores->mao[controle].ladoEsquerdo, jogadores->mao[controle].ladoDireito);
+           //printf("em cima peça do jogador, embaixo a peça usada\n");
+            //printf("|%d|%d|\n", pilha->pecasDaPilha[embaralharIndice].ladoEsquerdo, pilha->pecasDaPilha[embaralharIndice].ladoDireito);
+           //printf("---\n");
             pilha->pecasDaPilha[embaralharIndice].ladoDireito = -1;
             pilha->pecasDaPilha[embaralharIndice].ladoEsquerdo = -1;
             pilha->contadorDePecas--;
@@ -129,9 +129,10 @@ void distribuirPecas(struct pecasDaMesa *pilha, struct jogador *jogadores)
         }
     }
 
-    printf("-------------\n");
-    printf("%s - quantas peças: %d", jogadores->nome, jogadores->contadorDePecas);
-    system("pause");
+    //printf("-------------\n");
+    //printf("%s - quantas peças: %d", jogadores->nome, jogadores->contadorDePecas);
+    //system("pause");
+    //debug
 }
 
 //----------------------------------------------
@@ -292,9 +293,11 @@ int decidirPeca(struct jogador *jogador, struct pecasDaMesa *pilha)
     scanf("%d", &opcao);
     if (opcao == 1)
     {
+        
         printf("Qual peça vc vai jogar?\n");
         scanf("%d", &pecaJogada);
         return pecaJogada;
+        
     }
     else if (opcao == 2)
     {
@@ -377,6 +380,12 @@ int verifica(struct jogador *jogador, int qualPeca, struct mesa *mesaJogo, int *
 
     int i, ladoE = 0, ladoD = 0;
 
+    if(jogador->mao[qualPeca].ladoDireito == -1 && jogador->mao[qualPeca].ladoEsquerdo){
+        printf("Não pode jogar em nenhum lado\n");
+        system("pause");
+        return 0;
+    }
+
     for (i = 0; i < 31; i++)
     {
         if (mesaJogo->pecas[i].ladoDireito == -1)
@@ -421,8 +430,7 @@ int verifica(struct jogador *jogador, int qualPeca, struct mesa *mesaJogo, int *
         *qualLado = 3;
         return 1;
     }
-    printf("Não pode jogar em nenhum lado\n");
-    return 0;
+    
 }
 
 void girarPeca(struct jogador *jogador, int qualPeca)
@@ -737,9 +745,7 @@ int main(void)
         {
             printf("Seu jogo está sendo carregado...\n");
 
-            //carregar(&estado, NOME_ARQ);
-
-          //  FILE *arq = fopen(nomeArquivo, "rb");
+           
             FILE *arq = fopen("..//save.bin", "rb");
                 if (arq == NULL)
                 {
@@ -764,119 +770,15 @@ int main(void)
                 fclose(arq);
 
             jogadoresMain[0] = estado.j[0];
-           // for(i = 0; i < 1 + estado.j[0].contadorDePecas; i++){
-             //   jogadoresMain[0].mao[i] = estado.j[0].mao[i];
-            //}
+
             jogadoresMain[1] = estado.j[1];
-            //for(i = 0; i < 1 + estado.j[0].contadorDePecas; i++){
-              //  jogadoresMain[1].mao[i] = estado.j[1].mao[i];
-            //}
+            
             pilha = estado.pilha;
             mesaJogo = estado.mesaJogo;
             qualPeca = estado.qualPeca;
 
-
-            // loadEstate(&jogadoresMain[0], &jogadoresMain[1], &mesaJogo, &pilha);
-
-            /*
-            for(i = 0; i < 60; i++){
-                printf("|%d|%d| - ", mesaJogo.pecas[i].ladoDireito, mesaJogo.pecas[i].ladoEsquerdo);
-            }
-            for(i = 0; i < 2; i++){
-                printf("%s - %d peças", jogadoresMain[i].nome, jogadoresMain[i].contadorDePecas);
-                for(i = 0; i < 20; i++){
-                    printf("- |%d|%d| - peca %d\n", jogadoresMain[i].mao->ladoEsquerdo, jogadoresMain[i].mao->ladoDireito, jogadoresMain[i].contadorDePecas);
-                }
-            }
-            for(i = 0; i < 28; i++){
-                printf("- |%d|%d| - peca da pilha %d", pilha.pecasDaPilha->ladoEsquerdo, pilha.pecasDaPilha->ladoDireito, i );
-            }
-            printf("A pilha tem %d peças", pilha.contadorDePecas);
-            system("pause");
-            */
-            // debug
-
-            // função começa aqui
-
-            // Função carregar estava sendo implementada
-
-            /*do{
-                imprimeMesa(&mesaJogo);
-                printf("\n%s tem %d peças\n", jogadoresMain[0].nome, 1 + jogadoresMain[0].contadorDePecas);
-                printf("%s tem %d peças\n", jogadoresMain[1].nome, 1 + jogadoresMain[1].contadorDePecas);
-
-                qualPeca = decidirPeca(&jogadoresMain[jogador], &pilha);
-                controle = 0;
-
-                if (qualPeca != -1){
-
-                    do
-                    {
-                        jogaOuGira = menu2(girou);
-
-                        if (jogaOuGira == 1)
-                        { // jogou e não girou
-                            pode = verifica(&jogadoresMain[jogador], qualPeca, &mesaJogo, &qualLado);
-
-                            if (pode == 1)
-                            {
-                                jogarPeca(&jogadoresMain[jogador], qualPeca, &pilha, &mesaJogo, qualLado);
-                                // tem que atualizar a pilha
-
-                                system("pause");
-                                system("cls");
-                                imprimeMesa(&mesaJogo);
-                                // após toda jogada verifica se alguém venceu
-                                if (1 + jogadoresMain[jogador].contadorDePecas == 0)
-                                {
-                                    printf("jogador %s, venceu\n", jogadoresMain[jogador].nome);
-                                    system("pause");
-                                    exit(1);
-                                }
-                            }
-                            else
-                            { // não pôde jogar
-                                printf("não pôde jogar\n");
-                                controle = 1;
-                                break;
-                            }
-                        }
-
-                        else if (jogaOuGira == 2)
-                        { // girou a peça
-                            girarPeca(&jogadoresMain[jogador], qualPeca);
-                            printf("peça girada com sucesso\n");
-                            printf("|%d|%d|\n", jogadoresMain[jogador].mao[qualPeca].ladoEsquerdo, jogadoresMain[jogador].mao[qualPeca].ladoDireito);
-                            system("pause");
-                            // jogaOuGira = 1;
-                            controle = 1;
-                            break;
-                        }
-
-                    } while (jogaOuGira != 1);
-
-                    if (controle == 1)
-                    { // controle se passa a vez ou se o jogador continua
-                        system("cls");
-                        imprimeMesa(&mesaJogo);
-                        continue;
-                    }
-                }
-                else if (qualPeca == -1){ // decidir peça tem um menu que tem uma opção que traz pra cá, pula a vez
-                    printf("passando a vez\n");
-                    system("pause");
-                    system("cls");
-                    imprimeMesa(&mesaJogo);
-                }
-
-                    jogador = passarVez(jogador);
-                    system("cls");
-                    imprimeMesa(&mesaJogo);
-                }while (1);*/
-
-                op = 2;
-                
-                    
+            op = 2;
+                 
             }
             else if (op == 3)
             {
@@ -903,7 +805,7 @@ int main(void)
             distribuirPecas(&pilha, &jogadoresMain[0]);
 
             distribuirPecas(&pilha, &jogadoresMain[1]);
-        }
+        
 
         system("cls");
 
@@ -935,14 +837,17 @@ int main(void)
         {
             jogador = quemComeca;
         }
-
+        
         printf("\nquem é o jogador atual: %s\n", jogadoresMain[jogador].nome);
-if(op == 2 || op == 1){
+
+        system("pause");
+        }
+        if(op == 2 || op == 1){
         do
         {
             imprimeMesa(&mesaJogo);
-            printf("\n%s tem %d peças\n", jogadoresMain[0].nome, 1 + jogadoresMain[0].contadorDePecas);
-            printf("%s tem %d peças\n", jogadoresMain[1].nome, 1 + jogadoresMain[1].contadorDePecas);
+            //printf("\n%s tem %d peças\n", jogadoresMain[0].nome, 1 + jogadoresMain[0].contadorDePecas);
+            //printf("%s tem %d peças\n", jogadoresMain[1].nome, 1 + jogadoresMain[1].contadorDePecas);
 
             qualPeca = decidirPeca(&jogadoresMain[jogador], &pilha); // qualPeca == opção
             controle = 0;
@@ -967,7 +872,7 @@ if(op == 2 || op == 1){
                             system("cls");
                             imprimeMesa(&mesaJogo);
                             // após toda jogada verifica se alguém venceu
-                            printf("salvar - 1\nNão - 2\n");
+                            printf("\nDeseja salvar o estado atual do jogo?\nSalvar - 1\nNão - 2\n");
                             scanf("%d", &save);
                             if (save == 1)
                             {
@@ -983,7 +888,7 @@ if(op == 2 || op == 1){
 
                             if (1 + jogadoresMain[jogador].contadorDePecas == 0)
                             {
-                                printf("jogador %s, venceu\n", jogadoresMain[jogador].nome);
+                                printf("\njogador %s, venceu\n", jogadoresMain[jogador].nome);
                                 system("pause");
                                 exit(1);
                             }
@@ -1030,76 +935,6 @@ if(op == 2 || op == 1){
         } while (1);
 
 }
+}
 
-        /*
-        do{
-            imprimeMesa(&mesaJogo);
-            printf("\n%s tem %d peças\n", jogadoresMain[0].nome, 1 + jogadoresMain[0].contadorDePecas);
-            printf("%s tem %d peças\n", jogadoresMain[1].nome, 1 + jogadoresMain[1].contadorDePecas);
-
-            qualPeca = decidirPeca(&jogadoresMain[jogador], &pilha);
-            controle = 0;
-
-            if(qualPeca != -1){
-
-                do{
-                    jogaOuGira = menu2(girou);
-
-                    if(jogaOuGira == 1){//jogou e não girou
-                        pode = verifica(&jogadoresMain[jogador], qualPeca, &mesaJogo, &qualLado);
-
-                        if(pode == 1){
-                            jogarPeca(&jogadoresMain[jogador], qualPeca, &pilha, &mesaJogo, qualLado);
-                            //tem que atualizar a pilha
-
-                            system("pause");
-                            system("cls");
-                            imprimeMesa(&mesaJogo);
-
-                            if(1 + jogadoresMain[jogador].contadorDePecas == 0){
-                                printf("jogador %s, venceu\n", jogadoresMain[jogador].nome);
-                                system("pause");
-                                exit(1);
-                            }
-
-                            break;
-                        }
-                        else if(pode == 0){
-                            printf("Não pode jogar essa peça");
-                        }
-                        else if(girou == 2){
-                            printf("Não pode jogar a peça girada\n");
-
-                        }
-                    }
-                    else if(jogaOuGira == 2){//girou a peça
-                        girarPeca(&jogadoresMain[jogador], qualPeca);
-                        printf("peça girada com sucesso\n");
-                        printf("|%d|%d|\n", jogadoresMain[jogador].mao[qualPeca].ladoEsquerdo, jogadoresMain[jogador].mao[qualPeca].ladoDireito);
-                        system("pause");
-                        //jogaOuGira = 1;
-                        controle = 1;
-                        break;
-                    }
-
-                }while(jogaOuGira != 1);
-
-                if(controle == 1){
-                    system("cls");
-                    imprimeMesa(&mesaJogo);
-                    continue;
-                }
-            }
-            else if(qualPeca == -1){
-                printf("passando a vez\n");
-                system("pause");
-                system("cls");
-                imprimeMesa(&mesaJogo);
-            }
-
-            jogador = passarVez(jogador);
-            system("cls");
-            imprimeMesa(&mesaJogo);
-
-        }while(1);*/
-    }
+    
